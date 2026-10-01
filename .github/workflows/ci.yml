@@ -1,0 +1,32 @@
+name: MARS-GEOSPECTRA CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Strict Type Check
+        run: bun run type-check
+
+      - name: Run Vitest Unit Tests
+        run: bun run test
+
+      - name: Build Production Bundle
+        run: bun run build
